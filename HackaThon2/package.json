@@ -1,0 +1,93 @@
+{
+  "name": "HackaThon2",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "precommit": "pretty-quick --staged",
+    "prettier": "prettier --write 'app/**/*.{js,jsx,ts,tsx}'",
+    "postinstall": "react-native-schemes-manager all",
+    "open-dir": "open app/build/outputs/apk/release"
+  },
+  "xcodeSchemes": {
+    "Debug": [
+      "Dev2.Debug",
+      "Dev3.Debug",
+      "Staging.Debug",
+      "Debug"
+    ],
+    "Release": [
+      "Dev2.Release",
+      "Dev3.Release",
+      "Staging.Release",
+      "Release"
+    ],
+    "projectDirectory": "iOS"
+  },
+  "projectDirectory": "iOS",
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.4.4",
+    "eslint-plugin-import": "^2.17.3",
+    "hoist-non-react-statics": "^3.3.0",
+    "husky": "^2.5.0",
+    "prettier": "^1.18.2",
+    "react": "16.8.3",
+    "react-native": "0.59.9",
+    "react-native-console-time-polyfill": "^1.2.1",
+    "react-native-gesture-handler": "^1.3.0",
+    "react-native-schemes-manager": "^2.0.0",
+    "react-native-typescript-transformer": "^1.2.12",
+    "react-navigation": "^3.11.0",
+    "rxjs": "^6.5.2",
+    "schedule": "^0.5.0",
+    "tslib": "^1.10.0",
+    "tslint": "^5.18.0",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-etc": "^1.5.5",
+    "tslint-react": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "@types/jest": "^24.0.15",
+    "@types/react": "^16.8.22",
+    "@types/react-native": "^0.57.63",
+    "@types/react-test-renderer": "^16.8.2",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "metro-react-native-babel-preset": "^0.54.1",
+    "react-test-renderer": "16.8.3",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.2"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "transform": {
+      "^.+\\.(js)$": "<rootDir>/node_modules/babel-jest",
+      "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "testPathIgnorePatterns": [
+      "\\.snap$",
+      "<rootDir>/node_modules/"
+    ],
+    "cacheDirectory": ".jest/cache"
+  },
+  "rnpm": {
+    "assets": [
+      "./app/assets/fonts/"
+    ]
+  }
+}
