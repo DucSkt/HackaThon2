@@ -5,28 +5,23 @@ import {
     createStackNavigator,
     createSwitchNavigator
 } from 'react-navigation'
-import {HomeScreen} from "../screens/Home/HomeScreen";
-import {HistoryScreen} from "../screens/History/HistoryScreen";
-import {MapScreen} from "../screens/Map/MapScreen";
-import {MoreScreen} from "../screens/more/MoreScreen";
-import {colors} from "../vars";
-import {TabBar} from "./Tabbar/Tabbar";
-import {LoginScreen} from "../screens/Login/LoginScreen";
+import { HomeScreen } from "../screens/Home/HomeScreen";
+import { WelcomeScreen } from "../screens/Welcome/WelcomeScreen";
+import { SettingScreen } from "../screens/Setting/SettingScreen";
+import { MoreScreen } from "../screens/more/MoreScreen";
+import { colors } from "../vars";
+import { TabBar } from "./Tabbar/Tabbar";
+import { LoginScreen } from "../screens/Login/LoginScreen";
 
-const AppTabBar = createBottomTabNavigator(
+const AppTabBar = createStackNavigator(
     {
         HomeScreen,
-        HistoryScreen,
-        MapScreen,
+        SettingScreen,
         MoreScreen,
     },
     {
         initialRouteName: 'HomeScreen',
-        tabBarOptions: {
-            activeTintColor: colors.label_blue_light,
-            inactiveTintColor: colors.light_blue_grey,
-        },
-        tabBarComponent: props => <TabBar {...props} />,
+        headerMode: 'none'
     }
 );
 
@@ -51,10 +46,11 @@ const Login = createStackNavigator(
 const App = createSwitchNavigator(
     {
         AppTabBar,
-        Login
+        Login,
+        WelcomeScreen,
     },
     {
-        initialRouteName: 'AppTabBar',
+        initialRouteName: 'WelcomeScreen',
     }
 );
 
