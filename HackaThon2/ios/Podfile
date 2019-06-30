@@ -1,13 +1,24 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '9.0'
 
 target 'HackaThon2' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
 
   # Pods for HackaThon2
 
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+ # pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  # pod 'React', :path => '../node_modules/react-native', :subspecs => [
+  #   'RCTGeolocation',
+  # ]
+ 
+  pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
+end
 
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['SWIFT_VERSION'] = '4.0'  # required by simple_permission
+    end
+  end
 end

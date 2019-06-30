@@ -5,18 +5,20 @@ import {
     createStackNavigator,
     createSwitchNavigator
 } from 'react-navigation'
-import {HomeScreen} from "../screens/Home/HomeScreen";
-import {HistoryScreen} from "../screens/History/HistoryScreen";
-import {MapScreen} from "../screens/Map/MapScreen";
-import {MoreScreen} from "../screens/more/MoreScreen";
+import {HomeScreen} from "../screens/Home/HomeScreen.js";
+import {HistoryScreen} from "../screens/History/HistoryScreen.js";
+import {MapScreen} from "../screens/Map/MapScreen.js";
+import {MoreScreen} from "../screens/more/MoreScreen.js";
+import {CameraScreen} from "../screens/camera/CameraScreen";
 import {colors} from "../vars";
 import {TabBar} from "./Tabbar/Tabbar";
-import {LoginScreen} from "../screens/Login/LoginScreen";
+import {LoginScreen} from "../screens/Login/LoginScreen.js";
 
 const AppTabBar = createBottomTabNavigator(
     {
         HomeScreen,
         HistoryScreen,
+        CameraScreen,
         MapScreen,
         MoreScreen,
     },
