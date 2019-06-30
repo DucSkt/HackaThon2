@@ -1,4 +1,5 @@
 export const images = {
+  welcome: require('@/assets/images/welcome.jpg'),
   shark: require('@/assets/images/shark.png'),
   like: require('@/assets/icons/like.png'),
   dislike: require('@/assets/icons/dislike.png'),

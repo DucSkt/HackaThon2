@@ -8,9 +8,8 @@ export class WelcomeScreen extends React.PureComponent {
   state = { appReady: false }
   renderContent = () => {
     return <Container style={{ flex: 5 }}>
-      <View style={{ flex: 3 }}>
-        <Image style={{ flex: 1, width: null, height: null, backgroundColor: "#E5E9F2" }} source={0} />
-
+      <View style={{ flex: 3, alignItems: 'center', justifyContent: 'center', backgroundColor: "#E5E9F2" }}>
+        <Icon name="heart" style={{ fontSize: 80, color: "#f48fb1" }} />
       </View>
       <View style={{ flex: 2 }}>
         <Text style={{ color: "#47525E", fontSize: 32, marginTop: 24, marginBottom: 16, textAlign: 'center' }}>Welcome</Text>
@@ -19,21 +18,13 @@ export class WelcomeScreen extends React.PureComponent {
           <Text>Start Chatbot</Text>
         </Button>
       </View>
-    </Container >
+    </Container>
   }
-  componentDidMount() {
-    setTimeout(() => this.setState({ appReady: true }), 2000)
-  }
+
   render() {
     return (
-      <LoadingAnimation
-        isLoaded={this.state.appReady}
-        imageSource={images.shark}
-        backgroundStyle={{ backgroundColor: "#ffcdd2" }}
 
-      >
-        {this.renderContent()}
-      </LoadingAnimation>
+      this.renderContent()
 
 
     )

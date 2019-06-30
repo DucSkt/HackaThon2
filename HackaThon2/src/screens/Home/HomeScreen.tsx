@@ -1,11 +1,13 @@
 import * as React from 'react'
-import { TouchableOpacity, KeyboardAvoidingView, Keyboard, Switch, View } from 'react-native'
+import { TouchableOpacity, KeyboardAvoidingView, Keyboard, Switch, View, ActivityIndicator } from 'react-native'
 import { Input, Row, Item, Container, Header, Title, CheckBox, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { images } from '../../vars/images';
 import ImagePicker from 'react-native-image-picker';
 import Voice from 'react-native-voice';
 import { Tooltip } from 'react-native-elements'
+import axios from 'axios'
+
 export class HomeScreen extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -15,7 +17,7 @@ export class HomeScreen extends React.PureComponent {
   state = {
     messages: [],
     text: "",
-    language: "en-US"
+    language: "vi-VN"
   }
 
   options = {
@@ -27,16 +29,16 @@ export class HomeScreen extends React.PureComponent {
   };
 
   componentWillMount() {
+    //this.onSendMessageAPI("đau bụng, đau đầu")
     this.setState({
       messages: [
         {
           _id: new Date().getMilliseconds,
-          text: 'Hello. What can I help you?',
+          text: 'Xin chào. Hãy cho tôi biết bạn bị triệu chứng gì?',
           createdAt: new Date(),
           user: {
             _id: 2,
             name: 'Bot',
-            avatar: images.shark,
           },
         },
       ],
@@ -62,6 +64,11 @@ export class HomeScreen extends React.PureComponent {
             <Title>Chatbot</Title>
           </Body>
           <Right >
+
+            <Button transparent onPress={null}>
+              <Icon name='call' />
+            </Button>
+
             <Tooltip
               width={190}
               backgroundColor="#e0f2f1"
@@ -76,10 +83,11 @@ export class HomeScreen extends React.PureComponent {
 
           </Right>
         </Header>
-        <KeyboardAvoidingView style={{ flex: 1 }} enabled behavior="padding" keyboardVerticalOffset={16} >
-          <GiftedChat
-            renderInputToolbar={(props) => {
-              return <Row style={{ marginBottom: -16, alignItems: 'center', paddingRight: 16, paddingLeft: 8, borderTopWidth: 0.5, borderTopColor: "#8492A6" }}>
+        <GiftedChat
+          inverted
+          renderInputToolbar={(props) => {
+            return <KeyboardAvoidingView behavior="padding" enabled style={{ flex: 1 }} keyboardVerticalOffset={80} >
+              <Row style={{ marginBottom: -16, alignItems: 'center', paddingRight: 16, paddingLeft: 8, borderTopWidth: 0.5, borderTopColor: "#8492A6" }}>
                 <Icon name="camera" style={{ fontSize: 30, alignSelf: 'center', padding: 10, color: "#8492A6" }} onPress={this.takePhoto} />
                 <Icon name="images" style={{ fontSize: 30, alignSelf: 'center', padding: 10, color: "#8492A6" }} onPress={this.pickImage} />
                 <TouchableOpacity
@@ -91,16 +99,27 @@ export class HomeScreen extends React.PureComponent {
                 </TouchableOpacity>
                 <Input
                   value={this.state.text} placeholder="Type message..." onChangeText={(newText) => this.setState({ text: newText })} />
-                <Icon name="send" style={{ fontSize: 30, padding: 0, color: "#8492A6" }} onPress={() => this.state.text && props.onSend({ text: this.state.text.trim() }, true)} />
+                <Icon name="send" style={{ fontSize: 30, padding: 4, color: "#8492A6" }} onPress={() => {
+                  this.state.text && props.onSend({ text: this.state.text.trim() }, true)
+                  this.onSendMessageAPI(this.state.text.trim())
+
+                }
+
+                } />
               </Row>
-            }}
-            messages={this.state.messages}
-            onSend={messages => this.onSend(messages)}
-            user={{
-              _id: 1,
-            }}
-          />
-        </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+
+          }}
+          messages={this.state.messages}
+          onSend={messages => {
+
+            this.onSend(messages)
+          }}
+          user={{
+            _id: 1,
+          }}
+        />
+
       </Container >
     )
   }
@@ -125,21 +144,22 @@ export class HomeScreen extends React.PureComponent {
       console.error(e);
     }
   };
+
   onSend(messages = []) {
     this.setState(previousState => {
       return ({
         messages: GiftedChat.append(previousState.messages, messages),
-        text: "",
       })
     })
-    Keyboard.dismiss();
   }
 
   takePhoto = () => {
+    Keyboard.dismiss();
     ImagePicker.launchCamera(this.options, this.onGetImageResponse);
   }
 
   pickImage = () => {
+    Keyboard.dismiss();
     // Open Image Library:
     ImagePicker.launchImageLibrary(this.options, this.onGetImageResponse);
   }
@@ -169,5 +189,59 @@ export class HomeScreen extends React.PureComponent {
         image: response.uri,
       })
     }
+  }
+
+  onSendMessageAPI = (text) => {
+    if (!text.trim()) return;
+    if (text.trim().length < 15) {
+      this.setState({
+        messages: [
+          {
+            _id: new Date().getMilliseconds(),
+            text: "Bạn vui lòng cung cấp thêm thông tin cho chúng tôi...",
+            createdAt: new Date(),
+            user: {
+              _id: new Date().getMilliseconds(),
+              name: 'Bot',
+            },
+          }, ...this.state.messages
+        ],
+      })
+      return;
+    }
+
+    axios.get("https://ptitteam.com/AI_HACKATHON2019/apiChat.php?msg=" + text).then(
+      (response) => {
+        let { data } = response;
+        let benh = ""
+        if (data.length > 0) {
+          benh = `Chúng tôi tìm thấy ${data.length} kết quả:\n`
+        }
+        data.forEach((sick, index) => {
+
+          benh += "" + (index + 1) + ". " + sick.content + "\n"
+        })
+        this.setState({
+          messages: [
+            {
+              _id: new Date().getMilliseconds(),
+              text: data.length > 0 ? benh.trim() : "Không tìm thấy bệnh phù hợp",
+              createdAt: new Date(),
+              user: {
+                _id: new Date().getMilliseconds(),
+                name: 'Bot',
+              },
+            }, ...this.state.messages
+          ],
+          text: ""
+        })
+        console.log("Success")
+
+        console.log(JSON.stringify(response))
+      }
+    ).catch((e) => {
+      console.log("Error")
+      console.log(JSON.stringify(JSON.stringify(e)))
+    })
   }
 }
